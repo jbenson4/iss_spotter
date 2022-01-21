@@ -1,12 +1,5 @@
 const request = require('request');
-/**
- * Makes a single API request to retrieve the user's IP address.
- * Input:
- *   - A callback (to pass back an error or the IP string)
- * Returns (via Callback):
- *   - An error, if any (nullable)
- *   - The IP address as a string (null if error). Example: "162.245.144.188"
- */
+
  const fetchMyIP = function(callback) { 
   // use request to fetch IP address from JSON API
   const apiUrl = 'https://api.ipify.org?format=json';
@@ -25,4 +18,26 @@ const request = require('request');
   })
 }
 
-module.exports = { fetchMyIP };
+const fetchCoordsByIP = function(ip, callback) {
+  const geoAPI = `https://freegeoip.live/json/${ip}`;
+  request(geoAPI, (error, response, body) => {
+    if (error) {
+      callback(error, null);
+      return;
+    }
+    if (response.statusCode !== 200) {
+      const msg = `Status Code ${response.statusCode} when fetching coordinates. Response: ${body}`
+      callback(Error(msg), null);
+      return;
+    }
+    const coords = {};
+    coords.latitude = JSON.parse(body).latitude;
+    coords.longitude = JSON.parse(body).longitude;
+    callback(null, coords);
+  })
+}
+
+module.exports = { 
+  fetchMyIP,
+  fetchCoordsByIP,
+ };
