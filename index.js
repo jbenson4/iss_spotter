@@ -12,5 +12,5 @@ nextISSFlyoverTimesForMyLocation((error, passTimes) => {
   if (error) {
     return console.log("It didn't work!", error);
   }
-  dateTimeFormatter(passTimes);
+  dateTimeFormatter(passTimes)
 });
