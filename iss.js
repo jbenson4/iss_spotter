@@ -64,12 +64,12 @@ const nextISSFlyoverTimesForMyLocation = function(callback) {
       }
 
       fetchFlyoverTimes(loc, (error, nextPasses) => {
-      if (error) {
-        return callback(error, null);
-      }
+        if (error) {
+          return callback(error, null);
+        }
 
         callback(null, nextPasses);
-      })
+      });
     });
   });
 };
